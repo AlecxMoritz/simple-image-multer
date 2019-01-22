@@ -16,7 +16,6 @@ var upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('image'), (req, res) => {
     options = { multi: true };
-    console.log(req.file);
 
     Image.create({
         path: req.file.path
@@ -33,12 +32,10 @@ router.get('/:id', (req, res) => {
     })
     .then(foundImage => {
         res.status(200);
-        console.log(foundImage)
         res.sendFile(path.resolve('./' + foundImage.path))
     })
     .catch(err => {
-        console.log(err);
-        res.send("sorry it failed")
+        res.status(500).json(err);
     })
 })
 
